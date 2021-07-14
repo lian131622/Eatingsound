@@ -1,10 +1,13 @@
 # 基本库
-import os
 import random
 import tensorflow
 import matplotlib.pyplot as plt
 from model import *
 from tensorflow.keras.utils import to_categorical
+import os
+from helper import check_feature
+
+check_feature()
 
 
 def set_seeds(seed=666):
@@ -15,7 +18,6 @@ def set_seeds(seed=666):
 
 
 set_seeds()
-
 
 # load feature
 temp = np.array(np.load('./temp.npy', allow_pickle=True))
@@ -45,15 +47,15 @@ print('Y的特征尺寸是：', Y.shape)
 # k 折
 nfold = 5
 kf = KFold(n_splits=nfold, shuffle=True, random_state=2020)
-input_dim = (128*116, 1)
+input_dim = (128 * 116, 1)
 i = 0
 history = []
 for train_index, valid_index in kf.split(X, Y):
     print('\nFold {}'.format(i + 1))
     train_x, val_x = X[train_index], X[valid_index]
     train_y, val_y = Y[train_index], Y[valid_index]
-    train_x = train_x.reshape(-1, 128*116, 1)
-    val_x = val_x.reshape(-1, 128*116, 1)
+    train_x = train_x.reshape(-1, 128 * 116, 1)
+    val_x = val_x.reshape(-1, 128 * 116, 1)
     train_y = to_categorical(train_y)
     val_y = to_categorical(val_y)
     model = SwishNet(input_dim, 20)
