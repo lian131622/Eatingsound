@@ -1,3 +1,5 @@
+import os
+from feature_extract import extract
 
 # get the type and shape(if has one) of an variable
 def var_info(var, show=False):
@@ -17,3 +19,16 @@ def var_info(var, show=False):
         print('len:', len(var))
     if show:
         print(var)
+
+
+# check whether the dataset has been downloaded or not
+npylist = ['./mfcc.npy', './label.npy', './temp.npy', './melsp.npy', './melframe']
+
+
+def check_feature():
+    for npy in npylist:
+        if os.path.exists(npy):
+            continue
+        else:
+            extract()
+    return True

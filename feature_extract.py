@@ -43,6 +43,7 @@ def extract_mfcc(parent_dir, sub_dirs, max_file=10, file_ext="*.wav"):
     return [feature, label]
 
 
+# 统计所有素材的长度
 def max_len(parent_dir, sub_dirs, max_file=10, file_ext="*.wav"):
     maxlen = 0
     for sub_dir in sub_dirs:
@@ -54,6 +55,7 @@ def max_len(parent_dir, sub_dirs, max_file=10, file_ext="*.wav"):
     return maxlen
 
 
+# 将所有的素材统一长度，短的补齐，长的删除
 def unifylength(X, maxlen):
     if len(X) >= maxlen:
         return X[:maxlen]
@@ -77,26 +79,22 @@ def melspec(parent_dir, sub_dirs, maxlength, max_file=10, file_ext="*.wav"):
     return feature
 
 
-def melframe(parent_dir, sub_dirs, maxlength, max_file=10, file_ext="*.wav"):
+def mfccframe(parent_dir, sub_dirs, maxlength, max_file=10, file_ext="*.wav"):
     feature = []
     for sub_dir in sub_dirs:
         for fn in tqdm(glob.glob(os.path.join(parent_dir, sub_dir, file_ext))[:max_file]):  # 遍历数据集的所有文件
             fn = fn.replace('\\', '/')
             X, sample_rate = librosa.load(fn, res_type='kaiser_fast')
             X = unifylength(X, int(maxlength / 4))
-            melsc = librosa.feature.mfcc(y=X, sr=sample_rate,n_mfcc=128)
+            melsc = librosa.feature.mfcc(y=X, sr=sample_rate, n_mfcc=128)
             feature.append([melsc])
     return feature
 
 
 def extract():
-    # mfcc_128_all, label = extract_mfcc(parent_dir, sub_dirs, max_file=200)
-    # mels = melspec(parent_dir, sub_dirs, maxlength, max_file=200)
-    # np.save('./melsp', mels)
-    # np.save('./mfcc', mfcc_128_all)
-    # np.save('./label', label)
-    # np.save('./temp', [mfcc_128_all, label], allow_pickle=True)
-    np.save('./melframe', melframe(parent_dir, sub_dirs, maxlength, max_file=200))
-
-
-extract()
+    mfcc_128_all, label = extract_mfcc(parent_dir, sub_dirs, max_file=200)
+    np.save('./mfcc', mfcc_128_all)
+    np.save('./label', label)
+    np.save('./temp', [mfcc_128_all, label], allow_pickle=True)
+    np.save('./melsp',melspec(parent_dir, sub_dirs, maxlength, max_file=200))
+    np.save('./melframe', mfccframe(parent_dir, sub_dirs, maxlength, max_file=200))
