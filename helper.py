@@ -22,10 +22,10 @@ def var_info(var, show=False):
 
 
 # check whether the dataset has been downloaded or not
-npylist = ['./mfcc.npy', './label.npy', './temp.npy', './melsp.npy', './melframe']
-
-
 def check_feature():
+    npylist = ['./mfcc.npy', './label.npy', './temp.npy', './melsp.npy', './melframe.npy']
+    print(npylist)
+    print('hello')
     for npy in npylist:
         if os.path.exists(npy):
             continue

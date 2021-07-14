@@ -64,7 +64,8 @@ def unifylength(X, maxlen):
         return X
 
 
-maxlength = max_len(parent_dir, sub_dirs, max_file=200)
+if __name__ == 'main':
+    maxlength  = max_len(parent_dir, sub_dirs, max_file=200)
 
 
 def melspec(parent_dir, sub_dirs, maxlength, max_file=10, file_ext="*.wav"):

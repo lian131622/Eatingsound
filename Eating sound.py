@@ -9,9 +9,6 @@ from helper import check_feature
 
 check_feature()
 
-import os
-
-os.path.exists()
 
 
 def set_seeds(seed=666):
